@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: roboshop
+  name: mongodb 
+  labels:
+    tier: db
+    service: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: db
+      service: mongodb
+  template:
+    metadata:
+      labels:
+        tier: db
+        service: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: saivinaylt/mongodb:v1
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: www
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-dynamic-sc"
+      resources:
+        requests:
+          storage: 2Gi
+      
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: roboshop
+  name: mongodb
+  labels:
+    tier: db
+    service: mongodb
+spec:
+  selector:
+    tier: db
+    service: mongodb
+  ports:
+  - name: mongodb-port
+    protocol: TCP
+    port: 27017
+    targetPort: 27017
+
