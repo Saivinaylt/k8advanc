@@ -33,7 +33,7 @@ spec:
       storageClassName: "ebs-dynamic-sc"
       resources:
         requests:
-          storage: 2G
+          storage: 3G
 ---
 kind: Service
 apiVersion: v1
