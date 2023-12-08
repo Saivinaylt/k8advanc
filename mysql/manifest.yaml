@@ -34,8 +34,8 @@ spec:
       containers:
       - name: mysql
         image: saivinaylt/mysql:v1
-        # args:
-        # - "--ignore-db-dir=lost+found"
+        args:
+        - "--ignore-db-dir=lost+found"
         envFrom:
         - configMapRef:
             name: mysql-config
@@ -45,7 +45,7 @@ spec:
   # this is PVC
   volumeClaimTemplates:
   - metadata:
-      name: mysql
+      name: mysql-volume
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "ebs-sc"

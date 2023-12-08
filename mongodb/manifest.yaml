@@ -27,7 +27,7 @@ spec:
           mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
-      name: mongodb
+      name: mongodb-volume
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "ebs-sc"
