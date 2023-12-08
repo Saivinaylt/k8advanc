@@ -1,44 +1,48 @@
-kind: ConfigMap
 apiVersion: v1
+kind: ConfigMap
 metadata:
-  namespace: roboshop
-  name: mysql-configmap
+  name: mysql-config
 data:
-  MYSQL_ALLOW_EMPTY_PASSWORD : "yes"
-  MYSQL_DATABASE : cities
-  MYSQL_USER : shipping
-  MYSQL_PASSWORD : secret
+  MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  MYSQL_DATABASE: cities
+  MYSQL_USER: shipping
+  MYSQL_PASSWORD: secret
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  name: mysql
   namespace: roboshop
-  name: mysql 
   labels:
-    tier: db
-    service: mysql
+    app: mysql
+    tier: DB
+    project: roboshop
 spec:
   replicas: 1
   selector:
     matchLabels:
-      tier: db
-      service: mysql
+      app: mysql
+      tier: DB
+      project: roboshop
   template:
     metadata:
       labels:
-        tier: db
-        service: mysql
+        app: mysql
+        tier: DB
+        project: roboshop
     spec:
       containers:
       - name: mysql
-        image: saivinaylt/mysql:v1
-        imagePullPolicy: Always
+        image: techworldwithsiva/mysql:k8
+        args:
+        - "--ignore-db-dir=lost+found"
         envFrom:
         - configMapRef:
-            name: mysql-configmap
+            name: mysql-config
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql
+  # this is PVC
   volumeClaimTemplates:
   - metadata:
       name: mysql
@@ -47,26 +51,28 @@ spec:
       storageClassName: "ebs-dynamic-sc"
       resources:
         requests:
-          storage: 2G   
+          storage: 1Gi
 ---
-kind: Service
 apiVersion: v1
-metadata: 
-  namespace: roboshop
+kind: Service
+metadata:
   name: mysql
+  namespace: roboshop
   labels:
-    tier: db
-    service: mysql
+    app: mysql
+    tier: DB
     project: roboshop
 spec:
+  clusterIP: None
   selector:
-    tier: db
-    service: mysql
+  # you should provide pod labels here
+    app: mysql
+    tier: DB
     project: roboshop
   ports:
   - name: mysql-port
     protocol: TCP
+    # service port
     port: 3306
+    # pod port
     targetPort: 3306
-    
-
