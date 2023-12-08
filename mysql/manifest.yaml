@@ -36,6 +36,18 @@ spec:
         envFrom:
         - configMapRef:
             name: mysql-configmap
+        volumeMounts:
+        - name: mysql
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-dynamic-sc"
+      resources:
+        requests:
+          storage: 2G   
 ---
 kind: Service
 apiVersion: v1
