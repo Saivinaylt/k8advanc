@@ -13,32 +13,29 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   namespace: roboshop
-  name: mysql
+  name: mysql 
   labels:
     tier: db
     service: mysql
-    project: roboshop
 spec:
   replicas: 1
   selector:
     matchLabels:
       tier: db
       service: mysql
-      project: roboshop
   template:
     metadata:
-      labels: 
+      labels:
         tier: db
         service: mysql
-        project: roboshop
     spec:
       containers:
-      - image: saivinaylt/mysql:v1
+      - name: mysql
+        image: saivinaylt/mysql:v1
         imagePullPolicy: Always
-        name: mysql
         envFrom:
         - configMapRef:
-            name: mysql-configmap 
+            name: mysql-configmap
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql
