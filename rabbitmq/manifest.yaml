@@ -13,7 +13,7 @@ spec:
       tier: db
       service: rabbitmq
   template:
-    metedata:
+    metadata:
       labels: 
         tier: db
         service: rabbitmq
