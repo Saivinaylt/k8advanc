@@ -22,12 +22,12 @@ spec:
       - image: redis
         name: redis
         volumeMounts:
-        - name: rabbitmq
+        - name: radis
           mountPath: /data
   # this is PVC
   volumeClaimTemplates:
   - metadata:
-      name: rabbitmq
+      name: radis
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "ebs-sc"
