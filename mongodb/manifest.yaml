@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: roboshop
   name: mongodb 
+  namespace: roboshop
   labels:
     tier: db
     service: mongodb
@@ -27,19 +27,19 @@ spec:
           mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
-      name: mongodb-volume
+      name: mongodb
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "ebs-sc"
       resources:
         requests:
-          storage: 3G
+          storage: 2G
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: roboshop
   name: mongodb
+  namespace: roboshop
   labels:
     tier: db
     service: mongodb
