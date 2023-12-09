@@ -1,6 +1,6 @@
 apiversion: apps/v1
 kind: StatefulSet
-metedata:
+metadata:
   namespace: roboshop
   name: rabbitmq
   labels:
@@ -37,7 +37,7 @@ spec:
 ---
 kind: Service
 apiVersion: v1
-metedata:
+metadata:
   name: rabbitmq
   namespace: roboshop
   labels:
