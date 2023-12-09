@@ -46,7 +46,7 @@ spec:
   # this is PVC
   volumeClaimTemplates:
   - metadata:
-      name: mysql-volume
+      name: mysql
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: "ebs-sc"
