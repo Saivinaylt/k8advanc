@@ -1,8 +1,8 @@
-apiversion: apps/v1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: roboshop
   name: rabbitmq
+  namespace: roboshop
   labels:
     tier: db
     service: rabbitmq
