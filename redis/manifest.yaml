@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: roboshop
   name: redis
@@ -21,6 +21,19 @@ spec:
       containers:
       - image: redis
         name: redis
+        volumeMounts:
+        - name: rabbitmq
+          mountPath: /data
+  # this is PVC
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-sc"
+      resources:
+        requests:
+          storage: 2Gi
 ---
 kind: Service
 apiVersion: v1
@@ -31,6 +44,7 @@ metadata:
     tier: db
     service: redis
 spec:
+  clusterIP: None
   selector:
     tier: db
     service: redis
